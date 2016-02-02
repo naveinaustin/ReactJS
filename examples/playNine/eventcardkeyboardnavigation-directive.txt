@@ -1,0 +1,152 @@
+/*******************************************************************************
+ Copyright 2016 Ellucian Company L.P. and its affiliates.
+ *******************************************************************************/
+(function () {
+  'use strict';
+
+  angular.module('eventsApp').
+    directive('eventCardKeyboardNavigation', ['$timeout', eventCardKeyboardNavigation]);
+
+  function eventCardKeyboardNavigation($timeout) {
+    return {
+      restrict: "A",
+      replace: true,
+      link: function ($scope, elem, attr) {
+        var page = attr.eventCardKeyboardNavigation;
+        elem.bind('keydown', function (event) {
+          var target = $(event.target);
+
+          if(page === 'eventDetail') {
+            console.log('eventDetail');
+            //event.preventDefault();
+
+            if(event.which === 40) {
+              if(target.hasClass('ellipsis-align')) {
+             /*   target.attr('tabindex',-1);
+                target.parents('.function-card').find('.add-calendar-btn').attr('tabindex',0);
+                target.parents('.function-card').find('.add-calendar-btn').focus();*/
+              } else if(target.hasClass('.add-calendar-btn')) {
+
+              } else {
+                target.parents('.event-card-div').find('.function-card .event-card-heading .keyboard-focus').attr('tabindex',0);
+                target.parents('.event-card-div').find('.function-card .event-card-heading .keyboard-focus').focus();
+              }
+            } else if(event.which === 38) {
+
+            }
+          } else {
+            if(event.which === 40) {
+              if(!target.is('span')) {
+                target.attr('tabindex',-1);
+              }
+              if(target.parents('.event-card-div').next().length > 0) {
+                target.parents('.event-card-div').next().find('.event-card-title > .keyboard-focus').focus();
+                target.parents('.event-card-div').next().find('.event-card-title > .keyboard-focus').attr('tabindex',0);
+                //target.parents('.event-card-div').next().find('.event-card-title > span').focus();
+              } else {
+                target.parents('.event-month-container').next().find('.event-card-title > .keyboard-focus').first().focus();
+                target.parents('.event-month-container').next().find('.event-card-title > .keyboard-focus').first().attr('tabindex',0);
+                //target.parents('.event-month-container').next().find('.event-card-title > span').first().focus();
+              }
+            } else if(event.which === 38) {
+              if(target.parents('.event-card-div').prev().length > 0) {
+                target.parents('.event-card-div').prev().find('.event-card-title > .keyboard-focus').focus();
+                target.parents('.event-card-div').prev().find('.event-card-title > .keyboard-focus').attr('tabindex',0);
+                if(!target.is('span')) {
+                  target.attr('tabindex',-1);
+                }
+                //target.parents('.event-card-div').prev().find('.event-card-title > span').focus();
+              } else {
+                target.parents('.event-month-container').prev().find('.event-card-title > .keyboard-focus')
+                if(target.parents('.event-month-container').prev().find('.event-card-title > .keyboard-focus').length > 0) {
+                  if(!target.is('span')) {
+                    target.attr('tabindex',-1);
+                  }
+                }
+                target.parents('.event-month-container').prev().find('.event-card-title > .keyboard-focus').last().focus();
+                target.parents('.event-month-container').prev().find('.event-card-title > .keyboard-focus').last().attr('tabindex',0);
+                //target.parents('.event-month-container').prev().find('.event-card-title > span').last().focus();
+              }
+            }
+          }
+        });
+
+        function addTabIndexToFirstEventTitle() {
+          if(angular.element('.event-card-title > a').length || angular.element('.event-card-title > span').length) {
+            $timeout(function(){
+              $($(elem).find('.event-card-title > a')[0]).attr('tabindex',0);
+              $($(elem).find('.event-card-title > span')[0]).attr('tabindex',0);
+            }, 10);
+          } else {
+            $timeout(function(){
+              addTabIndexToFirstEventTitle();
+            }, 100);
+          }
+        };
+
+        function addKeyboardNavigationToDropdown() {
+          $('.dropdown').bind('keydown', function (evt) {
+            var $this = $(this);
+            switch(evt.keyCode) {
+              case 13: // Enter key
+              case 32: // Space bar
+              case 38: // Up arrow
+              case 40: // Down arrow
+                $this.addClass("open");
+                console.log('open');
+                $this.find('.dropdown-menu a:first').focus();
+                $('.dropdown-menu a').bind('keydown', function (evt) {
+                  var $this = $(this);
+
+                  function select_previous () {
+                    console.log('prev');
+                    $this.parent('li').prev().find('a').focus();
+                    evt.stopPropagation();
+                  }
+
+                  function select_next () {
+                    console.log('next');
+                    $this.parent('li').next().find('a').focus();
+                    evt.stopPropagation();
+                  }
+
+                  switch(evt.keyCode) {
+                    case 13: // Enter key
+                    case 32: // Space bar
+                      $this.click();
+                      $this.closest('.dropdown').removeClass('open');
+                      evt.stopPropagation();
+                      break;
+                    case 9: // Tab key
+                      if (evt.shiftKey) {
+                        select_previous();
+                      }
+                      else {
+                        select_next();
+                      }
+                      evt.preventDefault();
+                      break;
+                    case 38: // Up arrow
+                      select_previous();
+                      break;
+                    case 40: // Down arrow
+                      select_next();
+                      break;
+                  }
+                });
+                break;
+              case 27: // Escape key
+                $this.removeClass("open");
+                $this.focus();
+                break;
+            }
+          });
+
+
+        }
+        addTabIndexToFirstEventTitle();
+        addKeyboardNavigationToDropdown();
+      }
+    };
+  }
+})();
