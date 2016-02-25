@@ -26,3 +26,5 @@ The Admin page was created using ReactJS and Flux in NodeJS. The dependancies us
 "toastr": "^2.1.0",
 "vinyl-source-stream": "^1.1.0"
 ```
+
+Make sure NodeJS is installed and install the dependancies using npm install --save [dependancy]@[version number] 
