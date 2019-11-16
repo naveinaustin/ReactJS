@@ -1,0 +1,15 @@
+npm Commands
+-----------------------------------
+- npm -v - Check the version
+- npm install <package name> - Install package local to the project
+- npm install <package name> -g - Install package globally. This will be available to all projects
+- npm install <package name> --save-dev - Install package only for development and not to be added during packaging for production.
+- npm cache verify - Runs a report to verify your cache.
+- npm cache clean --force - Clean cache
+- npm audit - Gives a audit security report of packages and issues with them.
+- npm <script> - Execute internal scripts
+- npm run <script> - Execute custom scripts
+- npx -p <package> <command> - Temporarily install the package and run the command.
+- set production mode in powershell - $env:NODE_ENV="production"
+
+
