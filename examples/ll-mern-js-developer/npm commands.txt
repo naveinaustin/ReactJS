@@ -12,4 +12,6 @@ npm Commands
 - npx -p <package> <command> - Temporarily install the package and run the command.
 - set production mode in powershell - $env:NODE_ENV="production"
 
-
+mongodb
+-----------------------------------
+- Start mongodb with a path to specific DB: mongod --dbpath ./data/db

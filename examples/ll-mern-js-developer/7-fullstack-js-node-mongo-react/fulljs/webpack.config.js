@@ -15,6 +15,15 @@ module.exports = {
           loader: 'babel-loader'
         }
       }
+    ],
+    loaders: [
+      {
+        test: /\.json$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'json-loader'
+        }
+      }
     ]
   }
 };
